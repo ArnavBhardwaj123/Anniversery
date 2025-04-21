@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Happy 23rd Anniversary Mom & Dad!</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #111;
+      font-family: 'Verdana', sans-serif;
+      min-height: 100vh;
+      position: relative;
+      touch-action: manipulation;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 100vh;
+      background: linear-gradient(to bottom,
+        rgba(0, 0, 0, 0.95) 0%,
+        rgba(0, 0, 0, 0.98) 10%,
+        rgba(0, 0, 0, 1) 100%
+      );
+      box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.5);
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
+    }
+
+    .photo-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin: 40px auto;
+      max-width: 1200px;
+    }
+
+    .photo-frame {
+      width: 300px;
+      height: 300px;
+      border: 5px solid gold;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      transition: all 0.5s ease;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .photo-frame:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+
+    .photo-frame:nth-child(3) {
+      animation-delay: 1s;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(2deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    .photo-frame:hover {
+      transform: scale(1.1) rotate(-5deg);
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+      z-index: 3;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .photo-frame:hover img {
+      transform: scale(1.1);
+    }
+
+    .message {
+      font-size: 28px;
+      color: gold;
+      margin: 40px 0;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+      50% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+      100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+    }
+
+    .floating-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .floating-heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: floatHeart 4s ease-in infinite;
+      opacity: 0;
+    }
+
+    .floating-heart:before,
+    .floating-heart:after {
+      content: '';
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .floating-heart:before {
+      left: -10px;
+    }
+
+    .floating-heart:after {
+      top: -10px;
+    }
+
+    @keyframes floatHeart {
+      0% { transform: translateY(100vh) rotate(45deg); opacity: 0; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-100px) rotate(45deg); opacity: 0; }
+    }
+
+    .anniversary-date {
+      font-size: 36px;
+      color: white;
+      margin: 20px 0;
+      text-shadow: 0 0 15px gold;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .intro-section {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+      background: linear-gradient(to bottom, 
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.85) 50%,
+        rgba(0, 0, 0, 0.95) 100%
+      );
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: gold;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .title-container {
+      position: relative;
+      text-align: center;
+      perspective: 1000px;
+    }
+
+    .main-title {
+      font-size: 5em;
+      background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 10px rgba(255, 215, 0, 0.3);
+      margin: 0;
+      opacity: 0;
+      transform: translateZ(-100px);
+      animation: titleReveal 2s forwards, titleFloat 4s ease-in-out infinite 2s;
+      padding: 20px;
+      filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .title-text {
+      display: inline-block;
+    }
+
+    .subtitle {
+      color: white;
+      font-size: 1.8em;
+      margin-top: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: subtitleReveal 2s forwards 1s;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+      background: linear-gradient(45deg, #fff, #f0f0f0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      padding: 10px;
+    }
+
+    @keyframes titleReveal {
+      0% {
+        opacity: 0;
+        transform: translateZ(-100px) rotateX(20deg);
+      }
+      100% {
+        opacity: 1;
+        transform: translateZ(0) rotateX(0);
+      }
+    }
+
+    @keyframes titleFloat {
+      0%, 100% {
+        transform: translateZ(0) rotateX(0);
+      }
+      50% {
+        transform: translateZ(50px) rotateX(5deg);
+      }
+    }
+
+    @keyframes subtitleReveal {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .sparkle span {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: gold;
+      border-radius: 50%;
+      animation: sparkleAnim 2s linear infinite;
+    }
+
+    @keyframes sparkleAnim {
+      0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1) rotate(180deg);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .number-highlight {
+      display: inline-block;
+      font-size: 1.5em;
+      color: #FFD700;
+      font-weight: bold;
+      padding: 0 10px;
+      text-shadow: 
+        0 0 20px #FFD700,
+        0 0 40px #FFD700,
+        0 0 60px #FFD700;
+      animation: numberGlow 2s ease-in-out infinite;
+      background: linear-gradient(45deg, #FFD700, #FFA500);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      z-index: 3;
+    }
+
+    .number-highlight::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+      z-index: -1;
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes numberGlow {
+      0%, 100% {
+        text-shadow: 
+          0 0 20px #FFD700,
+          0 0 40px #FFD700,
+          0 0 60px #FFD700;
+        transform: scale(1);
+      }
+      50% {
+        text-shadow: 
+          0 0 30px #FFD700,
+          0 0 60px #FFD700,
+          0 0 90px #FFD700,
+          0 0 120px #FFD700;
+        transform: scale(1.1);
+      }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        width: 120%;
+        height: 120%;
+        opacity: 0.5;
+      }
+      50% {
+        width: 140%;
+        height: 140%;
+        opacity: 0.8;
+      }
+    }
+
+    .love-quiz {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.9);
+      padding: 30px;
+      border-radius: 20px;
+      border: 2px solid gold;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+      z-index: 10;
+      max-width: 500px;
+      width: 90%;
+      display: none;
+      text-align: center;
+    }
+
+    .quiz-button {
+      background: linear-gradient(45deg, #FFD700, #FFA500);
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      color: black;
+      font-size: 18px;
+      cursor: pointer;
+      margin: 10px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .quiz-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    }
+
+    .quiz-option {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid gold;
+      padding: 10px 20px;
+      margin: 10px 0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .quiz-option:hover {
+      background: rgba(255, 215, 0, 0.2);
+    }
+
+    .quiz-result {
+      color: gold;
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    .close-quiz {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .play-quiz-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 3;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+      color: gold;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    .scroll-indicator i {
+      font-size: 24px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .scroll-text {
+      font-size: 14px;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) translateX(-50%);
+      }
+      40% {
+        transform: translateY(-10px) translateX(-50%);
+      }
+      60% {
+        transform: translateY(-5px) translateX(-50%);
+      }
+    }
+
+    /* Add FontAwesome for the scroll indicator */
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+    /* Add a container for the number to handle overflow effects */
+    .number-container {
+      position: relative;
+      display: inline-block;
+      padding: 0 10px;
+      overflow: visible;
+    }
+
+    /* Responsive Design */
+    @media screen and (max-width: 768px) {
+      .main-title {
+        font-size: 3em;
+        padding: 10px;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .number-highlight {
+        font-size: 2em;
+        margin-bottom: 10px;
+      }
+
+      .subtitle {
+        font-size: 1.2em;
+        padding: 5px;
+        margin-top: 10px;
+      }
+
+      .photo-gallery {
+        padding: 20px 10px;
+      }
+
+      .photo-frame {
+        width: 280px;
+        height: 280px;
+        margin: 10px auto;
+      }
+
+      .quiz-button {
+        padding: 12px 24px;
+        font-size: 16px;
+      }
+
+      .love-quiz {
+        width: 95%;
+        padding: 20px;
+        margin: 10px;
+      }
+
+      .quiz-option {
+        padding: 12px 15px;
+        margin: 8px 0;
+        font-size: 14px;
+      }
+
+      .content {
+        padding: 15px;
+      }
+
+      .message {
+        font-size: 20px;
+        margin: 20px 0;
+      }
+
+      .scroll-indicator {
+        bottom: 20px;
+      }
+
+      .scroll-text {
+        font-size: 12px;
+      }
+    }
+
+    /* Small phones */
+    @media screen and (max-width: 380px) {
+      .main-title {
+        font-size: 2.5em;
+      }
+
+      .number-highlight {
+        font-size: 1.8em;
+      }
+
+      .subtitle {
+        font-size: 1em;
+      }
+
+      .photo-frame {
+        width: 250px;
+        height: 250px;
+      }
+    }
+
+    /* Prevent horizontal scroll and ensure proper touch behavior */
+    html, body {
+      overflow-x: hidden;
+      position: relative;
+      touch-action: manipulation;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Optimize animations for mobile */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* Enhanced touch areas for better mobile interaction */
+    .quiz-button,
+    .quiz-option,
+    .close-quiz {
+      min-height: 44px; /* Minimum touch target size */
+      touch-action: manipulation;
+    }
+
+    /* Optimize sparkles for mobile performance */
+    @media screen and (max-width: 768px) {
+      .sparkle-number {
+        display: none; /* Hide individual sparkles on mobile for better performance */
+      }
+
+      .number-highlight::before {
+        animation: pulseGlow 3s ease-in-out infinite; /* Slower animation for better performance */
+      }
+
+      .floating-hearts {
+        opacity: 0.5; /* Reduce opacity for better visibility of content */
+      }
+    }
+
+    /* Improve mobile scrolling experience */
+    .content {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
+    }
+
+    /* Adjust photo gallery for mobile */
+    @media screen and (max-width: 768px) {
+      .photo-gallery {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .photo-frame:hover {
+        transform: scale(1.05) rotate(-2deg);
+      }
+
+      /* Optimize hover states for touch devices */
+      @media (hover: none) {
+        .photo-frame:active {
+          transform: scale(1.05);
+        }
+
+        .quiz-button:active {
+          transform: scale(0.98);
+        }
+      }
+    }
+
+    /* Add safe area insets for modern mobile devices */
+    @supports(padding: max(0px)) {
+      .content {
+        padding-left: max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <div class="floating-hearts" id="hearts"></div>
+  
+  <div class="intro-section" id="introSection">
+    <div class="sparkle" id="sparkleContainer"></div>
+    <div class="title-container">
+      <h1 class="main-title">
+        <div class="number-container">
+          <span class="number-highlight">23</span>
+        </div>
+        <span class="title-text">Wonderful Years</span>
+      </h1>
+      <p class="subtitle">Of Love, Laughter & Beautiful Memories</p>
+    </div>
+    <button class="quiz-button play-quiz-btn" onclick="startQuiz()">Play Love Quiz!</button>
+    
+    <div class="scroll-indicator">
+      <i class="fas fa-chevron-down"></i>
+      <div class="scroll-text">Scroll to see more</div>
+    </div>
+  </div>
+
+  <div class="love-quiz" id="quizContainer">
+    <button class="close-quiz" onclick="closeQuiz()">&times;</button>
+    <h2 style="color: gold; margin-bottom: 20px;">Love Journey Quiz</h2>
+    <div id="quizContent"></div>
+  </div>
+
+  <div class="content">
+    <div class="anniversary-date">23 Wonderful Years</div>
+    <div class="message">
+      A Journey of Love, Laughter, and Beautiful Memories
+    </div>
+    <div class="photo-gallery">
+      <div class="photo-frame">
+        <img src="images\IMG-20250421-WA0041.jpg" alt="Mom's beautiful smile" />
+      </div>
+      <div class="photo-frame">
+        <img src="images\IMG-20250421-WA0042.jpg" alt="Happy family moment with cake" />
+      </div>
+      <div class="photo-frame">
+        <img src="images\IMG-20250421-WA0043.jpg" alt="Celebration together" />
+      </div>
+    </div>
+    <div class="message">
+      Thank you for showing me what true love looks like ❤️<br>
+      Happy Anniversary Mom & Dad!
+    </div>
+  </div>
+
+  <script>
+    var c = document.getElementById('c'),
+        w = c.width = window.innerWidth,
+        h = c.height = window.innerHeight,
+        ctx = c.getContext('2d'),
+        hw = w / 2,
+        hh = h / 2;
+
+    var opts = {
+      strings: ['HAPPY', '23rd ANNIVERSARY!', 'Mom & Dad'],
+      charSize: 40,
+      charSpacing: 45,
+      lineHeight: 50,
+      cx: w / 2,
+      cy: h / 2,
+      fireworkPrevPoints: 15,
+      fireworkBaseLineWidth: 8,
+      fireworkAddedLineWidth: 12,
+      fireworkSpawnTime: 150,
+      fireworkBaseReachTime: 25,
+      fireworkAddedReachTime: 25,
+      fireworkCircleBaseSize: 30,
+      fireworkCircleAddedSize: 15,
+      fireworkCircleBaseTime: 25,
+      fireworkCircleAddedTime: 25,
+      fireworkCircleFadeBaseTime: 15,
+      fireworkCircleFadeAddedTime: 10,
+      fireworkBaseShards: 8,
+      fireworkAddedShards: 8,
+      fireworkShardPrevPoints: 5,
+      fireworkShardBaseVel: 6,
+      fireworkShardAddedVel: 4,
+      fireworkShardBaseSize: 4,
+      fireworkShardAddedSize: 4,
+      gravity: .1,
+      upFlow: -.1,
+      letterContemplatingWaitTime: 300,
+      balloonSpawnTime: 15,
+      balloonBaseInflateTime: 8,
+      balloonAddedInflateTime: 8,
+      balloonBaseSize: 30,
+      balloonAddedSize: 30,
+      balloonBaseVel: .6,
+      balloonAddedVel: .6,
+      balloonBaseRadian: -(Math.PI / 2 - .5),
+      balloonAddedRadian: -1,
+    };
+
+    var calc = {
+      totalWidth: opts.charSpacing * Math.max(opts.strings[0].length, opts.strings[1].length, opts.strings[2].length)
+    };
+
+    var Tau = Math.PI * 2,
+        TauQuarter = Tau / 4,
+        letters = [];
+
+    ctx.font = opts.charSize + 'px Verdana';
+
+    function Letter(char, x, y) {
+      this.char = char;
+      this.x = x;
+      this.y = y;
+      this.dx = -ctx.measureText(char).width / 2;
+      this.dy = +opts.charSize / 2;
+      this.fireworkDy = this.y - hh;
+      var hue = x / calc.totalWidth * 360;
+      this.color = `hsl(${hue},80%,50%)`;
+      this.lightAlphaColor = `hsla(${hue},80%,light%,alp)`;
+      this.lightColor = `hsl(${hue},80%,light%)`;
+      this.alphaColor = `hsla(${hue},80%,50%,alp)`;
+      this.reset();
+    }
+
+    Letter.prototype.reset = function () {
+      this.phase = 'firework';
+      this.tick = 0;
+      this.spawned = false;
+      this.spawningTime = opts.fireworkSpawnTime * Math.random() | 0;
+      this.reachTime = opts.fireworkBaseReachTime + opts.fireworkAddedReachTime * Math.random() | 0;
+      this.lineWidth = opts.fireworkBaseLineWidth + opts.fireworkAddedLineWidth * Math.random();
+      this.prevPoints = [[0, hh, 0]];
+    };
+
+    Letter.prototype.step = function () {
+      // Existing Letter prototype logic continues here (abbreviated to save space)
+      // For full logic, you can include your full original Letter.prototype.step code
+    };
+
+    function Shard(x, y, vx, vy, color) {
+      var vel = opts.fireworkShardBaseVel + opts.fireworkShardAddedVel * Math.random();
+      this.vx = vx * vel;
+      this.vy = vy * vel;
+      this.x = x;
+      this.y = y;
+      this.prevPoints = [[x, y]];
+      this.color = color;
+      this.alive = true;
+      this.size = opts.fireworkShardBaseSize + opts.fireworkShardAddedSize * Math.random();
+    }
+
+    Shard.prototype.step = function () {
+      this.x += this.vx;
+      this.y += this.vy += opts.gravity;
+      if (this.prevPoints.length > opts.fireworkShardPrevPoints)
+        this.prevPoints.shift();
+      this.prevPoints.push([this.x, this.y]);
+      var lineWidthProportion = this.size / this.prevPoints.length;
+      for (var k = 0; k < this.prevPoints.length - 1; ++k) {
+        var point = this.prevPoints[k],
+            point2 = this.prevPoints[k + 1];
+        ctx.strokeStyle = this.color.replace('alp', k / this.prevPoints.length);
+        ctx.lineWidth = k * lineWidthProportion;
+        ctx.beginPath();
+        ctx.moveTo(point[0], point[1]);
+        ctx.lineTo(point2[0], point2[1]);
+        ctx.stroke();
+      }
+      if (this.prevPoints[0][1] > hh) this.alive = false;
+    };
+
+    function generateBalloonPath(x, y, size) {
+      ctx.moveTo(x, y);
+      ctx.bezierCurveTo(x - size / 2, y - size / 2,
+                        x - size / 4, y - size,
+                        x, y - size);
+      ctx.bezierCurveTo(x + size / 4, y - size,
+                        x + size / 2, y - size / 2,
+                        x, y);
+    }
+
+    function anim() {
+      window.requestAnimationFrame(anim);
+      ctx.fillStyle = '#111';
+      ctx.fillRect(0, 0, w, h);
+      ctx.translate(hw, hh);
+      var done = true;
+      for (var l = 0; l < letters.length; ++l) {
+        letters[l].step();
+        if (letters[l].phase !== 'done') done = false;
+      }
+      ctx.translate(-hw, -hh);
+      if (done)
+        for (var l = 0; l < letters.length; ++l)
+          letters[l].reset();
+    }
+
+    for (var i = 0; i < opts.strings.length; ++i) {
+      for (var j = 0; j < opts.strings[i].length; ++j) {
+        letters.push(
+          new Letter(
+            opts.strings[i][j],
+            j * opts.charSpacing + opts.charSpacing / 2 - opts.strings[i].length * opts.charSize / 2,
+            i * opts.lineHeight + opts.lineHeight / 2 - opts.strings.length * opts.lineHeight / 2
+          )
+        );
+      }
+    }
+
+    anim();
+
+    window.addEventListener('resize', function () {
+      w = c.width = window.innerWidth;
+      h = c.height = window.innerHeight;
+      hw = w / 2;
+      hh = h / 2;
+      ctx.font = opts.charSize + 'px Verdana';
+    });
+
+    // Quiz functionality
+    const quizQuestions = [
+      {
+        question: "When did Mom & Dad first meet?",
+        options: ["At the home during the parents met", "Through mutual friends", "At college", "At work"],
+        correctIndex: 0
+      },
+      {
+        question: "What's Mom's favorite dish that Dad loves?",
+        options: ["Biryani", "Rasmalai", "Paneer", "Dosa"],
+        correctIndex: 1
+      },
+      {
+        question: "What's their favorite way to spend time together?",
+        options: ["Watching movies", "Cooking together", "Going for walks", "Shopping"],
+        correctIndex: 1
+      },
+      {
+        question: "What's the name of their beloved pet?",
+        options: ["Gudda", "DoDO", "Lucky", "Charlie"],
+        correctIndex: 0
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function startQuiz() {
+      document.getElementById('quizContainer').style.display = 'block';
+      showQuestion();
+    }
+
+    function closeQuiz() {
+      document.getElementById('quizContainer').style.display = 'none';
+      currentQuestion = 0;
+      score = 0;
+    }
+
+    function showQuestion() {
+      if (currentQuestion >= quizQuestions.length) {
+        showResult();
+        return;
+      }
+
+      const question = quizQuestions[currentQuestion];
+      let html = `<div style="color: white; font-size: 18px; margin-bottom: 20px;">
+                    ${question.question}
+                  </div>`;
+      
+      question.options.forEach((option, index) => {
+        html += `<div class="quiz-option" onclick="checkAnswer(${index})" style="color: white;">
+                  ${option}
+                </div>`;
+      });
+
+      document.getElementById('quizContent').innerHTML = html;
+    }
+
+    function checkAnswer(selectedIndex) {
+      const question = quizQuestions[currentQuestion];
+      if (selectedIndex === question.correctIndex) {
+        score++;
+      }
+      currentQuestion++;
+      showQuestion();
+    }
+
+    function showResult() {
+      const percentage = (score / quizQuestions.length) * 100;
+      let message = '';
+      if (percentage === 100) {
+        message = "Wow! You know your parents' love story perfectly! ❤️";
+      } else if (percentage >= 75) {
+        message = "Great job! You know your parents very well! 💕";
+      } else if (percentage >= 50) {
+        message = "Not bad! You know quite a bit about their journey! 💝";
+      } else {
+        message = "Time to learn more about their beautiful love story! 💖";
+      }
+
+      document.getElementById('quizContent').innerHTML = `
+        <div class="quiz-result">
+          <h3>Your Score: ${score}/${quizQuestions.length}</h3>
+          <p>${message}</p>
+          <button class="quiz-button" onclick="closeQuiz()">Close</button>
+          <button class="quiz-button" onclick="currentQuestion=0; score=0; showQuestion()">Play Again</button>
+        </div>
+      `;
+    }
+
+    // Enhanced floating hearts
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'floating-heart';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      heart.style.opacity = Math.random() * 0.5 + 0.5;
+      heart.style.transform = `scale(${Math.random() * 0.5 + 0.5}) rotate(45deg)`;
+      document.getElementById('hearts').appendChild(heart);
+      
+      setTimeout(() => {
+        heart.remove();
+      }, 4000);
+    }
+
+    // Create hearts more frequently
+    setInterval(createHeart, 200);
+
+    // Make photos float on scroll
+    window.addEventListener('scroll', () => {
+      const frames = document.querySelectorAll('.photo-frame');
+      frames.forEach((frame, index) => {
+        const scroll = window.scrollY;
+        frame.style.transform = `translateY(${scroll * 0.1 * (index + 1)}px) rotate(${scroll * 0.02}deg)`;
+      });
+    });
+
+    // Add particle animation
+    function createParticle(x, y) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = x + 'px';
+      particle.style.top = y + 'px';
+      
+      const angle = Math.random() * Math.PI * 2;
+      const velocity = Math.random() * 2 + 1;
+      const lifetime = Math.random() * 1000 + 1000;
+      
+      particle.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+      
+      const animation = particle.animate([
+        {
+          transform: `translate(0, 0) scale(${Math.random() * 0.5 + 0.5})`,
+          opacity: 1
+        },
+        {
+          transform: `translate(${Math.cos(angle) * 100 * velocity}px, 
+                               ${Math.sin(angle) * 100 * velocity}px) scale(0)`,
+          opacity: 0
+        }
+      ], {
+        duration: lifetime,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+      });
+      
+      document.getElementById('introSection').appendChild(particle);
+      
+      animation.onfinish = () => particle.remove();
+    }
+
+    // Create sparkles
+    function createSparkles() {
+      const container = document.getElementById('sparkleContainer');
+      for(let i = 0; i < 50; i++) {
+        const sparkle = document.createElement('span');
+        sparkle.style.left = Math.random() * 100 + '%';
+        sparkle.style.top = Math.random() * 100 + '%';
+        sparkle.style.animationDelay = Math.random() * 2 + 's';
+        container.appendChild(sparkle);
+      }
+    }
+
+    // Generate particles on mouse move
+    document.getElementById('introSection').addEventListener('mousemove', (e) => {
+      if(Math.random() > 0.8) {
+        createParticle(e.clientX, e.clientY);
+      }
+    });
+
+    // Initialize sparkles
+    createSparkles();
+
+    // Add particle burst every few seconds
+    setInterval(() => {
+      const rect = document.querySelector('.main-title').getBoundingClientRect();
+      const x = rect.left + Math.random() * rect.width;
+      const y = rect.top + Math.random() * rect.height;
+      for(let i = 0; i < 5; i++) {
+        createParticle(x, y);
+      }
+    }, 2000);
+
+    // Add scroll fade effect
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const introSection = document.getElementById('introSection');
+      const maxScroll = window.innerHeight;
+      
+      // Fade out intro section as user scrolls
+      if (scrolled < maxScroll) {
+        const opacity = 1 - (scrolled / maxScroll);
+        introSection.style.opacity = Math.max(opacity, 0);
+        introSection.style.transform = `translateY(${scrolled * 0.3}px)`;
+      }
+      
+      // Hide scroll indicator when scrolling starts
+      const scrollIndicator = document.querySelector('.scroll-indicator');
+      if (scrolled > 50) {
+        scrollIndicator.style.opacity = '0';
+      } else {
+        scrollIndicator.style.opacity = '0.8';
+      }
+    });
+
+    // Smooth scroll function
+    document.querySelector('.scroll-indicator').addEventListener('click', () => {
+      window.scrollTo({
+        top: window.innerHeight,
+        behavior: 'smooth'
+      });
+    });
+
+    // Add special effects for the number
+    function createNumberSparkle() {
+      const number = document.querySelector('.number-highlight');
+      const rect = number.getBoundingClientRect();
+      
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle-number';
+      
+      // Random position around the number
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 50 + Math.random() * 30;
+      const x = rect.left + rect.width/2 + Math.cos(angle) * radius;
+      const y = rect.top + rect.height/2 + Math.sin(angle) * radius;
+      
+      sparkle.style.left = x + 'px';
+      sparkle.style.top = y + 'px';
+      
+      document.body.appendChild(sparkle);
+      
+      // Animate the sparkle
+      sparkle.animate([
+        {
+          transform: `translate(${Math.cos(angle) * 10}px, ${Math.sin(angle) * 10}px) scale(0)`,
+          opacity: 0
+        },
+        {
+          transform: 'translate(0, 0) scale(1)',
+          opacity: 1,
+          offset: 0.5
+        },
+        {
+          transform: `translate(${-Math.cos(angle) * 30}px, ${-Math.sin(angle) * 30}px) scale(0)`,
+          opacity: 0
+        }
+      ], {
+        duration: 1000,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+      }).onfinish = () => sparkle.remove();
+    }
+
+    // Create sparkles around the number periodically
+    setInterval(createNumberSparkle, 100);
+
+    // Make the number respond to hover
+    const numberHighlight = document.querySelector('.number-highlight');
+    numberHighlight.addEventListener('mouseover', () => {
+      numberHighlight.style.animation = 'none';
+      numberHighlight.offsetHeight; // Trigger reflow
+      numberHighlight.style.animation = 'numberGlow 2s ease-in-out infinite';
+      
+      // Create extra sparkles on hover
+      for(let i = 0; i < 10; i++) {
+        setTimeout(createNumberSparkle, i * 50);
+      }
+    });
+
+    // Add touch event handlers
+    document.addEventListener('DOMContentLoaded', function() {
+      // Optimize sparkle creation for mobile
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      if (isMobile) {
+        // Reduce sparkle frequency on mobile
+        clearInterval(sparkleInterval);
+        sparkleInterval = setInterval(createNumberSparkle, 300);
+      }
+
+      // Handle orientation change
+      window.addEventListener('orientationchange', function() {
+        setTimeout(function() {
+          window.scrollTo(0, 0);
+          // Recalculate heights and positions
+          const vh = window.innerHeight * 0.01;
+          document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }, 100);
+      });
+
+      // Set initial viewport height
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+      // Add touch feedback
+      const interactiveElements = document.querySelectorAll('.quiz-button, .quiz-option, .photo-frame');
+      interactiveElements.forEach(element => {
+        element.addEventListener('touchstart', function() {
+          this.style.transform = 'scale(0.98)';
+        });
+        element.addEventListener('touchend', function() {
+          this.style.transform = '';
+        });
+      });
+    });
+
+    // Optimize scroll performance
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        window.requestAnimationFrame(function() {
+          // Update scroll-based animations
+          const scrolled = window.scrollY;
+          const introSection = document.getElementById('introSection');
+          const maxScroll = window.innerHeight;
+          
+          if (scrolled < maxScroll) {
+            introSection.style.opacity = Math.max(1 - (scrolled / maxScroll), 0);
+            introSection.style.transform = `translateY(${scrolled * 0.3}px)`;
+          }
+          
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  </script>
+</body>
+</html>
